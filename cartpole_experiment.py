@@ -12,7 +12,7 @@ except ImportError as e:
 
 from value_iteration.value_function import QuadraticNetwork, TrigonometricQuadraticNetwork
 from value_iteration.run_experiment import run_experiment
-from value_iteration.pendulum import PendulumLogCos
+from value_iteration.cartpole import CartpoleLogCos
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -36,10 +36,10 @@ if __name__ == "__main__":
 
     model_path = None
     if args.algorithm.lower() == 'rfvi' and bool(args.load):
-        model_path = 'data/rFVI.torch'
+        model_path = 'data/rFVI_Cartpole_LogCosCost.torch'
 
     if args.algorithm.lower() == 'cfvi' and bool(args.load):
-        model_path = 'data/cFVI.torch'
+        model_path = 'data/cFVI_Cartpole_LogCosCost.torch'
 
 
     # Define Hyper-parameters:
@@ -54,39 +54,39 @@ if __name__ == "__main__":
         'plot': False,
 
         # System Specification:
-        'system_class': PendulumLogCos,
-        'state_cost': '1.e+0, 1.0e-1',
-        'action_cost': '5.e-1',
-        'eps': 6.5e-1,  # eps = 1 => \gamma = 1
+        'system_class': CartpoleLogCos,
+        'state_cost': '25.e+0, 1.e+0, 5.e-1, 1.e-1',
+        'action_cost': '1.e-1',
+        'eps': 0.80,  # eps = 1 => \gamma = 1
         'dt': 1. / 125.,
         'T': 5.,
 
         # Network:
         'n_network': 4,
         'activation': 'Tanh',
-        'n_width': 96,
-        'n_depth': 3,
+        'n_width': 64,
+        'n_depth': 4,
         'n_output': 1,
         'g_hidden': 1.41,
         'g_output': 1.,
         'b_output': -0.1,
 
         # Samples
-        'n_iter': 150,
+        'n_iter': 250,
         'eval_minibatch': 256 * 200,
         'test_minibatch': 256 * 20,
-        'n_minibatch': 256,
+        'n_minibatch': 512,
         'n_batches': 200,
 
         # Network Optimization
         'max_epoch': 20,
-        'lr_SGD': 3.0e-5,
+        'lr_SGD': 1.0e-4,
         'weight_decay': 1.e-6,
         'exp': 1.,
 
         # Lambda Traces
         'trace_weight_n': 1.e-4,
-        'trace_lambda': 0.85,
+        'trace_lambda': 0.90,
 
         # Exploration:
         'x_noise': 1.e-6,

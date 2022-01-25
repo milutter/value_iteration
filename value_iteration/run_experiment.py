@@ -41,9 +41,6 @@ def run_experiment(hyper):
     cuda = torch.cuda.is_available()
     alg_name = "rFVI" if hyper['robust'] else "cFVI"
 
-    #TODO(mlutter): Fixed for Pendulum
-    mat_shape = (150, 150)
-
     # Configuration for sampling trajectories from the system
     run_config = {"verbose": False, 'mode': 'init', 'fs_return': 10.,
                   'x_noise': hyper['x_noise'], 'u_noise': hyper['u_noise']}
@@ -52,6 +49,14 @@ def run_experiment(hyper):
     Q = np.array([float(x) for x in hyper['state_cost'].split(',')])
     R = np.array([float(x) for x in hyper['action_cost'].split(',')])
     system = hyper['system_class'](Q, R, cuda=cuda, **hyper)
+
+    if system.name.split("_")[0] == "Pendulum":
+        mat_shape = (150, 150)
+    elif system.name.split("_")[0] == "Cartpole":
+        mat_shape = (1, 150, 1, 150)
+    else:
+        raise ValueError
+
 
     # Compute Gamma s.t., the weight of the reward at time T is \eps, i.e., exp(-rho T) = gamma^(T/\Delta t) = eps:
     rho = -np.log(hyper['eps']) / hyper["T"]
@@ -70,7 +75,6 @@ def run_experiment(hyper):
 
         hyper = data['hyper']
         hyper['n_iter'] = 0
-        hyper['plot'] = True
 
         value_fun = ValueFunctionMixture(system.n_state, **val_fun_kwargs, **data['hyper'])
         value_fun.load_state_dict(data["state_dict"])
@@ -152,7 +156,7 @@ def run_experiment(hyper):
 
             # Save the model:
             if np.mod(step_i+1, 25) == 0:
-                model_file = f"data/{alg_name}_step_{step_i+1:03d}.torch"
+                model_file = f"data/{alg_name}_{system.name}_step_{step_i+1:03d}.torch"
                 torch.save({"epoch": step_i, "hyper": hyper, "state_dict": value_fun.state_dict()}, model_file)
 
     except KeyboardInterrupt as err:
@@ -165,7 +169,7 @@ def run_experiment(hyper):
 
         # Save the Model:
         if step_i > 10:
-            model_file = f"data/{alg_name}.torch"
+            model_file = f"data/{alg_name}_{system.name}.torch"
             torch.save({"epoch": step_i, "hyper": hyper, "state_dict": value_fun.state_dict()}, model_file)
 
     ################################################################################################################
