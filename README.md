@@ -7,8 +7,8 @@ Robotics: Science and Systems (RSS)](https://arxiv.org/pdf/2105.12189.pdf).
 - [Lutter et. al., (2021). Value Iteration in Continuous Actions, States and Time, \
  International Conference on Machine Learning (ICML)](https://arxiv.org/pdf/2105.04682.pdf).
 
-- [Lutter et. al., (2021). Continuous-Time Fitted Value Iteration for Robust Policies, \
-arXiv preprint arXiv:2110.01954](https://arxiv.org/pdf/2110.01954.pdf).
+- [Lutter et. al., (2023). Continuous-Time Fitted Value Iteration for Robust Policies, \
+IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)](https://arxiv.org/pdf/2110.01954.pdf).
 
 <p style='text-align: justify;'>
 <b>Abstract:</b>
@@ -74,11 +74,11 @@ If you use this implementation within your paper, please cite:
 	journal      = {Robotics: Science and Systems (RSS)}
 }
 
-@article{lutter2021robust,
-	title        = {Robust Value Iteration for Continuous Control Tasks},
+@article{lutter2023robust,
+	title        = {Continuous-Time Fitted Value Iteration for Robust Policies},
 	author       = {Lutter, Michael and Belousov, Boris and Mannor, Shie and Fox, Dieter and Garg, Animesh and Peters, Jan},
-	year         = 2021,
-	journal      = {arXiv preprint arXiv:}
+	year         = 2023,
+	journal      = {IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI}
 }
 ```
 
